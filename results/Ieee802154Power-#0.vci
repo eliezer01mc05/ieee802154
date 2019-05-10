@@ -1,0 +1,388 @@
+file 80107 1557503770                                           
+version 2
+run Ieee802154Power-0-20190510-12:54:35-22480
+attr configname Ieee802154Power
+attr datetime 20190510-12:54:35
+attr experiment Ieee802154Power
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvarsf ""
+attr measurement ""
+attr network Ieee802154Showcase
+attr processid 22480
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+param **.arp.typename "\"GlobalArp\""
+param **.netmaskRoutes "\"\""
+param *.radioMedium.backgroundNoise.power -110dBm
+param *.configurator.config "xmldoc(\"startopology.xml\")"
+param *.configurator.addStaticRoutes false
+param *.sensor*.numApps 1
+param *.sensor*.app[*].typename "\"UdpBasicApp\""
+param *.sensor*.app[*].destAddresses "\"controller\""
+param *.sensor*.app[*].destPort 1000
+param *.sensor*.app[*].sendInterval 1s
+param *.sensor*.app[*].startTime uniform(0s,1s)
+param *.sensor*.app[*].messageLength 10Byte
+param *.sensor*.app[*].packetName "\"SensorData\""
+param *.controller.numApps 2
+param *.controller.app[0].typename "\"UdpBasicApp\""
+param *.controller.app[0].destAddresses "\"sensor1 sensor2 sensor3 sensor4 sensor5\""
+param *.controller.app[0].destPort 1000
+param *.controller.app[0].sendInterval 0.125s
+param *.controller.app[0].startTime exponential(1s)
+param *.controller.app[0].messageLength 10Byte
+param *.controller.app[0].packetName "\"ControlData\""
+param *.controller.app[1].typename "\"UdpSink\""
+param *.controller.app[1].localPort 1000
+param *.lamp*.numApps 1
+param *.lamp*.app[0].typename "\"UdpSink\""
+param *.lamp*.app[0].localPort 1000
+param *.visualizer.*.routingTableVisualizer[0].displayRoutingTables false
+param *.visualizer.*.routingTableVisualizer[0].displayRoutesIndividually false
+param *.visualizer.*.routingTableVisualizer[0].lineShift 0
+param *.visualizer.*.routingTableVisualizer[0].displayLabels false
+param *.visualizer.*.interfaceTableVisualizer[0].displayInterfaceTables false
+param *.visualizer.*.numDataLinkVisualizers 2
+param *.visualizer.*.dataLinkVisualizer[*].displayLinks true
+param *.visualizer.*.dataLinkVisualizer[0].nodeFilter "\"sensor* or controller\""
+param *.visualizer.*.dataLinkVisualizer[1].*Color "\"blue\""
+param *.visualizer.*.dataLinkVisualizer[1].nodeFilter "\"lamp* or controller\""
+param *.visualizer.*.numStatisticVisualizers 2
+param *.visualizer.*.statisticVisualizer[*].zIndex 1
+param *.visualizer.*.statisticVisualizer[0].displayStatistics true
+param *.visualizer.*.statisticVisualizer[0].signalName "\"packetSent\""
+param *.visualizer.*.statisticVisualizer[0].statisticExpression "\"count\""
+param *.visualizer.*.statisticVisualizer[0].sourceFilter "\"**.controller.udp **.sensor*.udp\""
+param *.visualizer.*.statisticVisualizer[0].format "\"sent: %v pks\""
+param *.visualizer.*.statisticVisualizer[1].displayStatistics true
+param *.visualizer.*.statisticVisualizer[1].signalName "\"packetReceived\""
+param *.visualizer.*.statisticVisualizer[1].statisticExpression "\"count\""
+param *.visualizer.*.statisticVisualizer[1].sourceFilter "\"**.controller.udp **.lamp*.udp\""
+param *.visualizer.*.statisticVisualizer[1].format "\"rcvd: %v pks\""
+
+vector 0 Ieee802154Showcase.sensor1.energyStorage powerConsumption:vector ETV
+attr interpolationmode sample-hold
+attr source powerConsumptionChanged
+attr title "Power consumption, vector"
+vector 1 Ieee802154Showcase.sensor2.energyStorage powerConsumption:vector ETV
+attr interpolationmode sample-hold
+attr source powerConsumptionChanged
+attr title "Power consumption, vector"
+vector 2 Ieee802154Showcase.sensor3.energyStorage powerConsumption:vector ETV
+attr interpolationmode sample-hold
+attr source powerConsumptionChanged
+attr title "Power consumption, vector"
+vector 3 Ieee802154Showcase.sensor4.energyStorage powerConsumption:vector ETV
+attr interpolationmode sample-hold
+attr source powerConsumptionChanged
+attr title "Power consumption, vector"
+vector 4 Ieee802154Showcase.sensor5.energyStorage powerConsumption:vector ETV
+attr interpolationmode sample-hold
+attr source powerConsumptionChanged
+attr title "Power consumption, vector"
+vector 5 Ieee802154Showcase.controller.energyStorage powerConsumption:vector ETV
+attr interpolationmode sample-hold
+attr source powerConsumptionChanged
+attr title "Power consumption, vector"
+vector 6 Ieee802154Showcase.sensor1.wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 7 Ieee802154Showcase.sensor1.wlan[0].radio.energyConsumer powerConsumption:vector ETV
+attr interpolationmode sample-hold
+attr source powerConsumptionChanged
+attr title "Power consumption, vector"
+vector 8 Ieee802154Showcase.sensor2.wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 9 Ieee802154Showcase.sensor2.wlan[0].radio.energyConsumer powerConsumption:vector ETV
+attr interpolationmode sample-hold
+attr source powerConsumptionChanged
+attr title "Power consumption, vector"
+vector 10 Ieee802154Showcase.sensor3.wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 11 Ieee802154Showcase.sensor3.wlan[0].radio.energyConsumer powerConsumption:vector ETV
+attr interpolationmode sample-hold
+attr source powerConsumptionChanged
+attr title "Power consumption, vector"
+vector 12 Ieee802154Showcase.sensor4.wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 13 Ieee802154Showcase.sensor4.wlan[0].radio.energyConsumer powerConsumption:vector ETV
+attr interpolationmode sample-hold
+attr source powerConsumptionChanged
+attr title "Power consumption, vector"
+vector 14 Ieee802154Showcase.sensor5.wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 15 Ieee802154Showcase.sensor5.wlan[0].radio.energyConsumer powerConsumption:vector ETV
+attr interpolationmode sample-hold
+attr source powerConsumptionChanged
+attr title "Power consumption, vector"
+vector 16 Ieee802154Showcase.controller.wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 17 Ieee802154Showcase.controller.wlan[0].radio.energyConsumer powerConsumption:vector ETV
+attr interpolationmode sample-hold
+attr source powerConsumptionChanged
+attr title "Power consumption, vector"
+vector 18 Ieee802154Showcase.sensor1.wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 19 Ieee802154Showcase.sensor2.wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 20 Ieee802154Showcase.sensor3.wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 21 Ieee802154Showcase.sensor4.wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 22 Ieee802154Showcase.sensor5.wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 23 Ieee802154Showcase.controller.wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 24 Ieee802154Showcase.sensor4.app[0] packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, vector(packetBytes)"
+vector 25 Ieee802154Showcase.sensor4.udp packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, vector(packetBytes)"
+vector 26 Ieee802154Showcase.sensor4.energyStorage residualEnergyCapacity:vector ETV
+attr interpolationmode linear
+attr source residualEnergyCapacityChanged
+attr title "Residual energy capacity, vector"
+vector 27 Ieee802154Showcase.sensor4.wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 28 Ieee802154Showcase.sensor2.energyStorage residualEnergyCapacity:vector ETV
+attr interpolationmode linear
+attr source residualEnergyCapacityChanged
+attr title "Residual energy capacity, vector"
+vector 29 Ieee802154Showcase.controller.energyStorage residualEnergyCapacity:vector ETV
+attr interpolationmode linear
+attr source residualEnergyCapacityChanged
+attr title "Residual energy capacity, vector"
+vector 30 Ieee802154Showcase.sensor5.energyStorage residualEnergyCapacity:vector ETV
+attr interpolationmode linear
+attr source residualEnergyCapacityChanged
+attr title "Residual energy capacity, vector"
+vector 31 Ieee802154Showcase.sensor3.energyStorage residualEnergyCapacity:vector ETV
+attr interpolationmode linear
+attr source residualEnergyCapacityChanged
+attr title "Residual energy capacity, vector"
+vector 32 Ieee802154Showcase.sensor1.energyStorage residualEnergyCapacity:vector ETV
+attr interpolationmode linear
+attr source residualEnergyCapacityChanged
+attr title "Residual energy capacity, vector"
+vector 33 Ieee802154Showcase.sensor2.wlan[0].mac packetDropNotAddressToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 34 Ieee802154Showcase.controller.wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 35 Ieee802154Showcase.controller.udp packetReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, vector(packetBytes)"
+vector 36 Ieee802154Showcase.controller.udp passedUpPk:vector(count) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed up, vector(count)"
+vector 37 Ieee802154Showcase.controller.app[1] packetReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, vector(packetBytes)"
+vector 38 Ieee802154Showcase.controller.app[1] endToEndDelay:vector ETV
+attr interpolationmode none
+attr source dataAge(packetReceived)
+attr title "end-to-end delay, vector"
+attr unit s
+vector 39 Ieee802154Showcase.sensor5.wlan[0].mac packetDropNotAddressToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 40 Ieee802154Showcase.sensor3.wlan[0].mac packetDropNotAddressToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 41 Ieee802154Showcase.sensor1.wlan[0].mac packetDropNotAddressToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 42 Ieee802154Showcase.sensor3.app[0] packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, vector(packetBytes)"
+vector 43 Ieee802154Showcase.sensor3.udp packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, vector(packetBytes)"
+vector 44 Ieee802154Showcase.sensor3.wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 45 Ieee802154Showcase.controller.app[1] throughput:vector ETV
+attr source throughput(packetReceived)
+attr title "throughput, vector"
+attr unit bps
+vector 46 Ieee802154Showcase.sensor4.wlan[0].mac packetDropNotAddressToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 47 Ieee802154Showcase.sensor5.app[0] packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, vector(packetBytes)"
+vector 48 Ieee802154Showcase.sensor5.udp packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, vector(packetBytes)"
+vector 49 Ieee802154Showcase.sensor5.wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 50 Ieee802154Showcase.controller.app[0] packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, vector(packetBytes)"
+vector 51 Ieee802154Showcase.controller.udp packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, vector(packetBytes)"
+vector 52 Ieee802154Showcase.sensor2.wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 53 Ieee802154Showcase.sensor2.udp packetReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, vector(packetBytes)"
+vector 54 Ieee802154Showcase.sensor2.udp droppedPkWrongPort:vector(count) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNoPortFound(packetDropped)
+attr title "packets dropped (wrong port), vector(count)"
+vector 55 Ieee802154Showcase.sensor1.wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 56 Ieee802154Showcase.sensor1.udp packetReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, vector(packetBytes)"
+vector 57 Ieee802154Showcase.sensor1.udp droppedPkWrongPort:vector(count) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNoPortFound(packetDropped)
+attr title "packets dropped (wrong port), vector(count)"
+vector 58 Ieee802154Showcase.sensor1.app[0] packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, vector(packetBytes)"
+vector 59 Ieee802154Showcase.sensor1.udp packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, vector(packetBytes)"
+vector 60 Ieee802154Showcase.sensor2.app[0] packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, vector(packetBytes)"
+vector 61 Ieee802154Showcase.sensor2.udp packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, vector(packetBytes)"
+vector 62 Ieee802154Showcase.sensor4.udp packetReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, vector(packetBytes)"
+vector 63 Ieee802154Showcase.sensor4.udp droppedPkWrongPort:vector(count) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNoPortFound(packetDropped)
+attr title "packets dropped (wrong port), vector(count)"
+0	15528 3225 0 557 0 1.032402646325 131 0 0.075 1.37527 0.07587500135
+1	18753 2941 0 549 0 1.032402617701 119 0 0.075 1.30526 0.0695250013
+2	21694 2633 0 555 0 1.03240262967 107 0 0.075 1.23525 0.06317500125
+3	24327 2911 0 561 0 1.034642594114 118 0 0.075 1.350255 0.072000001275
+4	27238 2615 0 553 0 1.032402629138 107 0 0.075 1.23525 0.06317500125
+5	29853 4300 0 551 0 1.032402621007 173 0 0.075 1.620305 0.098100001525
+6	34153 252 0 477 0 0.910314592624 13 0 3 27 69
+7	34405 3217 0 557 0 1.032402646325 130 0 0.075 1.37527 0.07587500135
+8	37622 162 0 388 0 0.851123737257 9 0 3 17 43
+9	37784 2933 0 549 0 1.032402617701 118 0 0.075 1.30526 0.0695250013
+10	40717 73 0 64 0 0.386717708223 5 0 3 7 17
+11	40790 2731 0 555 0 1.03240262967 106 0 0.075 1.23525 0.06317500125
+12	43521 145 0 560 0 1.034450594114 8 0 3 15 39
+13	43666 3020 0 561 0 1.034642594114 117 0 0.075 1.350255 0.072000001275
+14	46686 75 0 111 0 0.479681111655 5 0 3 7 17
+15	46761 2713 0 553 0 1.032402629138 106 0 0.075 1.23525 0.06317500125
+16	49474 599 0 526 0 1.031858567221 27 0 3 62 160
+17	50073 4464 0 551 0 1.032402621007 172 0 0.075 1.620305 0.098100001525
+18	54537 1141 0 557 0 1.032402646325 49 0 3 82 196
+19	55678 1147 0 549 0 1.032402617701 49 0 3 88 214
+20	56825 1147 0 555 0 1.03240262967 49 0 3 94 232
+21	57972 1173 0 560 0 1.034450594114 50 0 3 91 223
+22	59145 1135 0 553 0 1.032402629138 49 0 3 94 232
+23	60280 1153 0 551 0 1.032402621007 49 0 3 61 133
+24	61433 23 4 4 0.056712975726 0.056712975726 1 10 10 10 100
+25	61456 23 6 6 0.056712975726 0.056712975726 1 18 18 18 324
+26	61479 2156 10 561 0.057160975726 1.034642594114 51 -0.0013743188129706 -2.8580487863e-07 -0.037015851587283 3.5505802388027e-05
+27	63635 236 10 561 0.057160975726 1.034642594114 10 0 2 11 17
+28	63871 2103 12 549 0.057352999313 1.032402617701 50 -0.0014311076130885 -2.86764996565e-07 -0.036355266146761 3.5457893162013e-05
+29	65974 2201 13 551 0.057353002619 1.032402621007 52 -0.001571738973105 -2.86765013095e-07 -0.041086408923355 4.3439147598605e-05
+30	68175 2057 14 553 0.05735301075 1.032402629138 49 -0.0013635895331457 -2.8676505375e-07 -0.034117466240387 3.1628519850463e-05
+31	70232 2070 15 555 0.057353011282 1.03240262967 49 -0.0013635895331484 -2.8676505641e-07 -0.034188047822287 3.1672495977436e-05
+32	72302 2147 16 557 0.057353027937 1.032402646325 51 -0.0014986256932316 -2.86765139685e-07 -0.037821088109759 3.8026979190573e-05
+33	74449 434 19 550 0.059048999313 1.032402617701 18 5 65 504 24138
+34	74883 1144 21 526 0.059049002619 1.031858567221 48 0 2 48 72
+35	76027 123 23 394 0.059049002619 0.851123759633 5 18 18 90 1620
+36	76150 118 23 394 0.059049002619 0.851123759633 5 1 5 15 55
+37	76268 123 24 395 0.059049002619 0.851123759633 5 10 10 50 500
+38	76391 183 24 395 0.059049002619 0.851123759633 5 0.002016017729 0.004256025403 0.014816106602 4.8084620986961e-05
+39	76574 526 26 554 0.05904901075 1.032402629138 22 5 65 626 30622
+40	77100 534 28 556 0.059049011282 1.03240262967 22 5 65 626 30622
+41	77634 336 30 558 0.059049027937 1.032402646325 14 5 65 382 17654
+42	77970 24 51 51 0.384381708223 0.384381708223 1 10 10 10 100
+43	77994 24 53 53 0.384381708223 0.384381708223 1 18 18 18 324
+44	78018 92 57 64 0.384829708223 0.386717708223 4 0 2 4 6
+45	78110 107 69 355 0.1 0.8 8 0 800 2400 1920000
+46	78217 486 77 509 0.386717743779 0.91085864492 20 5 65 574 28388
+47	78703 24 98 98 0.477665111655 0.477665111655 1 10 10 10 100
+48	78727 25 100 100 0.477665111655 0.477665111655 1 18 18 18 324
+49	78752 96 104 111 0.477793111655 0.479681111655 4 0 2 4 6
+50	78848 100 145 514 0.653882567221 1.028882567221 4 10 10 40 400
+51	78948 100 147 515 0.653882567221 1.028882567221 4 18 18 72 1296
+52	79048 288 164 388 0.657178589597 0.851123737257 12 0 2 12 18
+53	79336 25 166 166 0.657178589597 0.657178589597 1 18 18 18 324
+54	79361 24 166 166 0.657178589597 0.657178589597 1 1 1 1 1
+55	79385 476 256 477 0.781858592624 0.910314592624 20 0 2 20 30
+56	79861 50 258 446 0.781858592624 0.906218592624 2 18 18 36 648
+57	79911 48 258 446 0.781858592624 0.906218592624 2 1 2 3 5
+58	79959 24 326 326 0.84426574409 0.84426574409 1 10 10 10 100
+59	79983 24 328 328 0.84426574409 0.84426574409 1 18 18 18 324
+60	80007 25 339 339 0.847251737257 0.847251737257 1 10 10 10 100
+61	80032 25 341 341 0.847251737257 0.847251737257 1 18 18 18 324
+62	80057 25 538 538 1.031858594114 1.031858594114 1 18 18 18 324
+63	80082 24 538 538 1.031858594114 1.031858594114 1 1 1 1 1
+

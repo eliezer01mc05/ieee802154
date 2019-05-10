@@ -1,0 +1,240 @@
+version 2
+run Ieee802154-0-20190510-13:24:23-23810
+attr configname Ieee802154
+attr datetime 20190510-13:24:23
+attr experiment Ieee802154
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvarsf ""
+attr measurement ""
+attr network Ieee802154Showcase
+attr processid 23810
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+param **.arp.typename "\"GlobalArp\""
+param **.netmaskRoutes "\"\""
+param *.radioMedium.backgroundNoise.power -110dBm
+param *.configurator.config "xmldoc(\"startopology.xml\")"
+param *.configurator.addStaticRoutes false
+param *.sensor*.numApps 1
+param *.sensor*.app[*].typename "\"UdpBasicApp\""
+param *.sensor*.app[*].destAddresses "\"controller\""
+param *.sensor*.app[*].destPort 1000
+param *.sensor*.app[*].sendInterval 1s
+param *.sensor*.app[*].startTime uniform(0s,1s)
+param *.sensor*.app[*].messageLength 10Byte
+param *.sensor*.app[*].packetName "\"SensorData\""
+param *.controller.numApps 2
+param *.controller.app[0].typename "\"UdpBasicApp\""
+param *.controller.app[0].destAddresses "\"sensor1 sensor2 sensor3 sensor4 sensor5\""
+param *.controller.app[0].destPort 1000
+param *.controller.app[0].sendInterval 0.125s
+param *.controller.app[0].startTime exponential(1s)
+param *.controller.app[0].messageLength 10Byte
+param *.controller.app[0].packetName "\"ControlData\""
+param *.controller.app[1].typename "\"UdpSink\""
+param *.controller.app[1].localPort 1000
+param *.lamp*.numApps 1
+param *.lamp*.app[0].typename "\"UdpSink\""
+param *.lamp*.app[0].localPort 1000
+param *.visualizer.*.routingTableVisualizer[0].displayRoutingTables false
+param *.visualizer.*.routingTableVisualizer[0].displayRoutesIndividually false
+param *.visualizer.*.routingTableVisualizer[0].lineShift 0
+param *.visualizer.*.routingTableVisualizer[0].displayLabels false
+param *.visualizer.*.interfaceTableVisualizer[0].displayInterfaceTables false
+param *.visualizer.*.numDataLinkVisualizers 2
+param *.visualizer.*.dataLinkVisualizer[*].displayLinks true
+param *.visualizer.*.dataLinkVisualizer[0].nodeFilter "\"sensor* or controller\""
+param *.visualizer.*.dataLinkVisualizer[1].*Color "\"blue\""
+param *.visualizer.*.dataLinkVisualizer[1].nodeFilter "\"lamp* or controller\""
+param *.visualizer.*.numStatisticVisualizers 2
+param *.visualizer.*.statisticVisualizer[*].zIndex 1
+param *.visualizer.*.statisticVisualizer[0].displayStatistics true
+param *.visualizer.*.statisticVisualizer[0].signalName "\"packetSent\""
+param *.visualizer.*.statisticVisualizer[0].statisticExpression "\"count\""
+param *.visualizer.*.statisticVisualizer[0].sourceFilter "\"**.controller.udp **.sensor*.udp\""
+param *.visualizer.*.statisticVisualizer[0].format "\"sent: %v pks\""
+param *.visualizer.*.statisticVisualizer[1].displayStatistics true
+param *.visualizer.*.statisticVisualizer[1].signalName "\"packetReceived\""
+param *.visualizer.*.statisticVisualizer[1].statisticExpression "\"count\""
+param *.visualizer.*.statisticVisualizer[1].sourceFilter "\"**.controller.udp **.lamp*.udp\""
+param *.visualizer.*.statisticVisualizer[1].format "\"rcvd: %v pks\""
+
+vector 0 Ieee802154Showcase.sensor1.energyStorage powerConsumption:vector ETV
+attr interpolationmode sample-hold
+attr source powerConsumptionChanged
+attr title "Power consumption, vector"
+vector 1 Ieee802154Showcase.sensor2.energyStorage powerConsumption:vector ETV
+attr interpolationmode sample-hold
+attr source powerConsumptionChanged
+attr title "Power consumption, vector"
+vector 2 Ieee802154Showcase.sensor3.energyStorage powerConsumption:vector ETV
+attr interpolationmode sample-hold
+attr source powerConsumptionChanged
+attr title "Power consumption, vector"
+vector 3 Ieee802154Showcase.sensor4.energyStorage powerConsumption:vector ETV
+attr interpolationmode sample-hold
+attr source powerConsumptionChanged
+attr title "Power consumption, vector"
+vector 4 Ieee802154Showcase.sensor5.energyStorage powerConsumption:vector ETV
+attr interpolationmode sample-hold
+attr source powerConsumptionChanged
+attr title "Power consumption, vector"
+vector 5 Ieee802154Showcase.controller.energyStorage powerConsumption:vector ETV
+attr interpolationmode sample-hold
+attr source powerConsumptionChanged
+attr title "Power consumption, vector"
+vector 6 Ieee802154Showcase.sensor1.wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 7 Ieee802154Showcase.sensor1.wlan[0].radio.energyConsumer powerConsumption:vector ETV
+attr interpolationmode sample-hold
+attr source powerConsumptionChanged
+attr title "Power consumption, vector"
+vector 8 Ieee802154Showcase.sensor2.wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 9 Ieee802154Showcase.sensor2.wlan[0].radio.energyConsumer powerConsumption:vector ETV
+attr interpolationmode sample-hold
+attr source powerConsumptionChanged
+attr title "Power consumption, vector"
+vector 10 Ieee802154Showcase.sensor3.wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 11 Ieee802154Showcase.sensor3.wlan[0].radio.energyConsumer powerConsumption:vector ETV
+attr interpolationmode sample-hold
+attr source powerConsumptionChanged
+attr title "Power consumption, vector"
+vector 12 Ieee802154Showcase.sensor4.wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 13 Ieee802154Showcase.sensor4.wlan[0].radio.energyConsumer powerConsumption:vector ETV
+attr interpolationmode sample-hold
+attr source powerConsumptionChanged
+attr title "Power consumption, vector"
+vector 14 Ieee802154Showcase.sensor5.wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 15 Ieee802154Showcase.sensor5.wlan[0].radio.energyConsumer powerConsumption:vector ETV
+attr interpolationmode sample-hold
+attr source powerConsumptionChanged
+attr title "Power consumption, vector"
+vector 16 Ieee802154Showcase.controller.wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 17 Ieee802154Showcase.controller.wlan[0].radio.energyConsumer powerConsumption:vector ETV
+attr interpolationmode sample-hold
+attr source powerConsumptionChanged
+attr title "Power consumption, vector"
+vector 18 Ieee802154Showcase.sensor1.wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 19 Ieee802154Showcase.sensor2.wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 20 Ieee802154Showcase.sensor3.wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 21 Ieee802154Showcase.sensor4.wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 22 Ieee802154Showcase.sensor5.wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 23 Ieee802154Showcase.controller.wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+0	0	0	0
+0	0	0	0
+0	0	0	0
+0	0	0	0
+0	0	0	5e-06
+1	0	0	0
+1	0	0	0
+1	0	0	0
+1	0	0	0
+1	0	0	5e-06
+2	0	0	0
+2	0	0	0
+2	0	0	0
+2	0	0	0
+2	0	0	5e-06
+3	0	0	0
+3	0	0	0
+3	0	0	0
+3	0	0	0
+3	0	0	5e-06
+4	0	0	0
+4	0	0	0
+4	0	0	0
+4	0	0	0
+4	0	0	5e-06
+5	0	0	0
+5	0	0	0
+5	0	0	0
+5	0	0	0
+5	0	0	5e-06
+6	0	0	0
+6	0	0	0
+6	0	0	2
+7	0	0	0
+7	0	0	0
+7	0	0	0
+7	0	0	5e-06
+8	0	0	0
+8	0	0	0
+8	0	0	2
+9	0	0	0
+9	0	0	0
+9	0	0	0
+9	0	0	5e-06
+10	0	0	0
+10	0	0	0
+10	0	0	2
+11	0	0	0
+11	0	0	0
+11	0	0	0
+11	0	0	5e-06
+12	0	0	0
+12	0	0	0
+12	0	0	2
+13	0	0	0
+13	0	0	0
+13	0	0	0
+13	0	0	5e-06
+14	0	0	0
+14	0	0	0
+14	0	0	2
+15	0	0	0
+15	0	0	0
+15	0	0	0
+15	0	0	5e-06
+16	0	0	0
+16	0	0	0
+16	0	0	2
+17	0	0	0
+17	0	0	0
+17	0	0	0
+17	0	0	5e-06
+18	0	0	1
+19	0	0	1
+20	0	0	1
+21	0	0	1
+22	0	0	1
+23	0	0	1
+
