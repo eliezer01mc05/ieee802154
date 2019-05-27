@@ -16,7 +16,7 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
 
-package inet.applications.udpappwsn;
+package inet.applications.udpapp;
 
 import inet.applications.contract.IApp;
 
@@ -33,18 +33,18 @@ import inet.applications.contract.IApp;
 //
 // Received packets are discarded.
 //
-// The peer can be a ~UdpSink, another ~UdpAppWSN (it handles received packets
+// The peer can be a ~UdpSink, another ~UdpBasicApp (it handles received packets
 // like ~UdpSink), or a ~UdpEchoApp. When used with ~UdpEchoApp, the rcvdPkLifetime
 // statistic will contain the round-trip times.
 //
-simple UdpAppWSN like IApp
+simple UdpBasicApp like IApp
 {
     parameters:
         string interfaceTableModule;   // The path to the InterfaceTable module
         int localPort = default(-1);  // local port (-1: use ephemeral port)
         string destAddresses = default(""); // list of IP addresses, separated by spaces ("": don't send)
         string localAddress = default("");
-        string packetName = default("UdpAppWSNData");
+        string packetName = default("UdpBasicAppData");
         int destPort;
         volatile int messageLength @unit(B); // length of messages to generate, in bytes
         double startTime @unit(s) = default(this.sendInterval); // application start time (start of the first packet)
@@ -68,8 +68,9 @@ simple UdpAppWSN like IApp
         @statistic[rcvdPkLifetime](title="received packet lifetime"; source="dataAge(packetReceived)"; unit=s; record=stats,vector; interpolationmode=none);
         @statistic[rcvdPkSeqNo](title="received packet sequence number"; source="appPkSeqNo(packetReceived)"; record=vector; interpolationmode=none);
         
-        //var
-        string timestamp;
+        //VAR
+		string typeNode = default("End Service");
+        bool isGPS = default(false);
     gates:
         input socketIn @labels(UdpControlInfo/up);
         output socketOut @labels(UdpControlInfo/down);

@@ -17,7 +17,7 @@
 //
 
 #include "inet/applications/base/ApplicationPacket_m.h"
-#include "inet/applications/udpappwsn/UdpAppWSN.h"
+#include "inet/applications/udpapp/UdpBasicApp.h"
 #include "inet/common/ModuleAccess.h"
 #include "inet/common/TagBase_m.h"
 #include "inet/common/TimeTag_m.h"
@@ -27,22 +27,16 @@
 #include "inet/networklayer/common/L3AddressResolver.h"
 #include "inet/transportlayer/contract/udp/UdpControlInfo_m.h"
 
-#include <chrono>
-#include <ctime>
-#include <iostream>
-
 namespace inet {
 
-Define_Module(UdpAppWSN);
+Define_Module(UdpBasicApp);
 
-UdpAppWSN::~UdpAppWSN()
+UdpBasicApp::~UdpBasicApp()
 {
-    std::cout << "UdpAppWSN" << endl;
     cancelAndDelete(selfMsg);
 }
 
-void UdpAppWSN::initialize(int stage)
-
+void UdpBasicApp::initialize(int stage)
 {
     ApplicationBase::initialize(stage);
 
@@ -51,30 +45,29 @@ void UdpAppWSN::initialize(int stage)
         numReceived = 0;
         WATCH(numSent);
         WATCH(numReceived);
-
-        localPort = par("localPort");
-        destPort = par("destPort");
-        startTime = par("startTime");
-        stopTime = par("stopTime");
-        packetName = par("packetName");
+        localPort    = par("localPort");
+        destPort     = par("destPort");
+        startTime    = par("startTime");
+        stopTime     = par("stopTime");
+        packetName   = par("packetName");
         dontFragment = par("dontFragment");
+        typeNode     = par("typeNode").stringValue();
+        isGPS        = par("isGPS").boolValue();
+
         if (stopTime >= SIMTIME_ZERO && stopTime < startTime)
             throw cRuntimeError("Invalid startTime/stopTime parameters");
         selfMsg = new cMessage("sendTimer");
-        timestamp = par("timestamp");
     }
-    std::cout << "initialize" << endl;
 }
 
-void UdpAppWSN::finish()
+void UdpBasicApp::finish()
 {
     recordScalar("packets sent", numSent);
     recordScalar("packets received", numReceived);
     ApplicationBase::finish();
-    std::cout << "finish" << endl;
 }
 
-void UdpAppWSN::setSocketOptions()
+void UdpBasicApp::setSocketOptions()
 {
     int timeToLive = par("timeToLive");
     if (timeToLive != -1)
@@ -103,25 +96,24 @@ void UdpAppWSN::setSocketOptions()
         socket.joinLocalMulticastGroups(mgl);
     }
     socket.setCallback(this);
-
-    std::cout << "setSocketOptions" << endl;
 }
 
-L3Address UdpAppWSN::chooseDestAddr()
+L3Address UdpBasicApp::chooseDestAddr()
 {
     int k = intrand(destAddresses.size());
     if (destAddresses[k].isUnspecified() || destAddresses[k].isLinkLocal()) {
         L3AddressResolver().tryResolve(destAddressStr[k].c_str(), destAddresses[k]);
     }
     return destAddresses[k];
-    std::cout << "chooseDestAddr" << endl;
 }
 
-void UdpAppWSN::sendPacket()
+void UdpBasicApp::sendPacket() //Como funciona isso???
 {
     std::ostringstream str;
     str << packetName << "-" << numSent;
-    Packet *packet = new Packet(str.str().c_str());
+    //Packet *packet = new Packet(str.str().c_str());
+    Packet *packet = new Packet("Hello!");
+    std::cout << str.str().c_str() << std::endl;
     if(dontFragment)
         packet->addTagIfAbsent<FragmentationReq>()->setDontFragment(true);
     const auto& payload = makeShared<ApplicationPacket>();
@@ -133,20 +125,22 @@ void UdpAppWSN::sendPacket()
     emit(packetSentSignal, packet);
     socket.sendTo(packet, destAddr, destPort);
     numSent++;
-    std::cout << "sendPacket" << endl;
+    std::cout << destAddr << " " << destPort << std::endl;
 }
 
-void UdpAppWSN::processStart()
-{
+void UdpBasicApp::processStart(){
+
     socket.setOutputGate(gate("socketOut"));
     const char *localAddress = par("localAddress");
     socket.bind(*localAddress ? L3AddressResolver().resolve(localAddress) : L3Address(), localPort);
-    setSocketOptions();
+    setSocketOptions(); // determine how the socket will operate
 
     const char *destAddrs = par("destAddresses");
     cStringTokenizer tokenizer(destAddrs);
     const char *token;
 
+    // Put all address (sensor1, sensor2, ...) to destAddressStr
+    // Verify their consistency
     while ((token = tokenizer.nextToken()) != nullptr) {
         destAddressStr.push_back(token);
         L3Address result;
@@ -156,24 +150,25 @@ void UdpAppWSN::processStart()
         destAddresses.push_back(result);
     }
 
+    // If node to send is not empty
+    // Send message to itself, to start send packets
     if (!destAddresses.empty()) {
         selfMsg->setKind(SEND);
         processSend();
-    }
-    else {
+    } // otherwise, if stopTime is reached
+    else { // send message to itself to stop the process
         if (stopTime >= SIMTIME_ZERO) {
             selfMsg->setKind(STOP);
             scheduleAt(stopTime, selfMsg);
         }
     }
-
-    std::cout << "processStart" << endl;
 }
 
-void UdpAppWSN::processSend()
+void UdpBasicApp::processSend()
 {
     sendPacket();
     simtime_t d = simTime() + par("sendInterval");
+    // Send self message again with type Send
     if (stopTime < SIMTIME_ZERO || d < stopTime) {
         selfMsg->setKind(SEND);
         scheduleAt(d, selfMsg);
@@ -182,136 +177,113 @@ void UdpAppWSN::processSend()
         selfMsg->setKind(STOP);
         scheduleAt(stopTime, selfMsg);
     }
-    std::cout << "processSend" << endl;
 }
 
-void UdpAppWSN::processStop()
+void UdpBasicApp::processStop()
 {
     socket.close();
-    std::cout << "processStop" << endl;
 }
 
-void UdpAppWSN::handleMessageWhenUp(cMessage *msg)
-{
+// handle the message sent to itself to fire a process
+void UdpBasicApp::handleMessageWhenUp(cMessage *msg){
+
     if (msg->isSelfMessage()) {
         ASSERT(msg == selfMsg);
         switch (selfMsg->getKind()) {
-            case START:
+            case START:{
                 processStart();
                 break;
+            }
 
-            case SEND:
+            case SEND:{
                 processSend();
                 break;
+            }
 
-            case STOP:
+            case STOP:{
                 processStop();
                 break;
+            }
 
-            default:
+            case ASK:{
+                if(typeNode == "End Device")
+                //Logica do envio
+                break;
+            }
+
+            case ANS:{
+                if(typeNode != "End Device"){
+                    //Enviar mensagem
+                    //Logica da resposa
+                }
+                break;
+            }
+
+            default:{
                 throw cRuntimeError("Invalid kind %d in self message", (int)selfMsg->getKind());
+            }
         }
     }
     else
         socket.processMessage(msg);
-    std::cout << "handleMessageWhenUp" << endl;
 }
 
-void UdpAppWSN::socketDataArrived(UdpSocket *socket, Packet *packet)
-{
+void UdpBasicApp::socketDataArrived(UdpSocket *socket, Packet *packet){
+    std::cout << "Data Received" << std::endl;
     // process incoming packet
     processPacket(packet);
-    std::cout << "socketDataArrived" << endl;
 }
 
-void UdpAppWSN::socketErrorArrived(UdpSocket *socket, Indication *indication)
+void UdpBasicApp::socketErrorArrived(UdpSocket *socket, Indication *indication)
 {
     EV_WARN << "Ignoring UDP error report " << indication->getName() << endl;
     delete indication;
-    std::cout << "socketErrorArrived" << endl;
 }
 
-void UdpAppWSN::socketClosed(UdpSocket *socket)
+void UdpBasicApp::socketClosed(UdpSocket *socket)
 {
     if (operationalState == State::STOPPING_OPERATION)
         startActiveOperationExtraTimeOrFinish(par("stopOperationExtraTime"));
-    std::cout << "socketClosed" << endl;
 }
 
-void UdpAppWSN::refreshDisplay() const
+void UdpBasicApp::refreshDisplay() const
 {
     ApplicationBase::refreshDisplay();
 
     char buf[100];
     sprintf(buf, "rcvd: %d pks\nsent: %d pks", numReceived, numSent);
     getDisplayString().setTagArg("t", 0, buf);
-
-    //std::cout << "refreshDisplay" << endl;
 }
 
-void UdpAppWSN::processPacket(Packet *pk)
+void UdpBasicApp::processPacket(Packet *pk)
 {
     emit(packetReceivedSignal, pk);
-    EV_INFO << "Received packet: " << UdpSocket::getReceivedPacketInfo(pk) << endl;
+    EV_INFO   << "Received packet: " << UdpSocket::getReceivedPacketInfo(pk) << endl;
+    std::cout << "Received packet: " << UdpSocket::getReceivedPacketInfo(pk) << std::endl;
     delete pk;
     numReceived++;
-    std::cout << "processPacket" << endl;
 }
 
-void UdpAppWSN::handleStartOperation(LifecycleOperation *operation)
+void UdpBasicApp::handleStartOperation(LifecycleOperation *operation)
 {
     simtime_t start = std::max(startTime, simTime());
     if ((stopTime < SIMTIME_ZERO) || (start < stopTime) || (start == stopTime && startTime == stopTime)) {
         selfMsg->setKind(START);
         scheduleAt(start, selfMsg);
     }
-    std::cout << "handleStartOperation" << endl;
 }
 
-void UdpAppWSN::handleStopOperation(LifecycleOperation *operation)
+void UdpBasicApp::handleStopOperation(LifecycleOperation *operation)
 {
     cancelEvent(selfMsg);
     socket.close();
     delayActiveOperationFinish(par("stopOperationTimeout"));
-    std::cout << "handleStopOperation" << endl;
 }
 
-void UdpAppWSN::handleCrashOperation(LifecycleOperation *operation)
+void UdpBasicApp::handleCrashOperation(LifecycleOperation *operation)
 {
     cancelEvent(selfMsg);
     socket.destroy();         //TODO  in real operating systems, program crash detected by OS and OS closes sockets of crashed programs.
-    std::cout << "handleCashOperation" << endl;
-}
-
-void UdpAppWSN::timeSim() {
-    using namespace std;
-        using namespace std::chrono;
-    typedef duration<int, ratio_multiply<hours::period, ratio<24> >::type> days;
-        system_clock::time_point now = system_clock::now();
-        system_clock::duration tp = now.time_since_epoch();
-        days d = duration_cast<days>(tp);
-        tp -= d;
-        hours h = duration_cast<hours>(tp);
-        tp -= h;
-        minutes m = duration_cast<minutes>(tp);
-        tp -= m;
-        seconds s = duration_cast<seconds>(tp);
-        tp -= s;
-        std::cout << d.count() << "d " << h.count() << ':'
-                  << m.count() << ':' << s.count();
-        std::cout << " " << tp.count() << "["
-                  << system_clock::duration::period::num << '/'
-                  << system_clock::duration::period::den << "]\n";
-
-        time_t tt = system_clock::to_time_t(now);
-        tm utc_tm = *gmtime(&tt);
-        tm local_tm = *localtime(&tt);
-        std::cout << utc_tm.tm_year + 1900 << '-';
-        std::cout << utc_tm.tm_mon + 1 << '-';
-        std::cout << utc_tm.tm_mday << ' ';
-        std::cout << utc_tm.tm_hour << ':';
-        std::cout << utc_tm.tm_min << ':';
-        std::cout << utc_tm.tm_sec << '\n';
 }
 
 } // namespace inet
