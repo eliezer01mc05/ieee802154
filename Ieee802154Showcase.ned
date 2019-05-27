@@ -14,23 +14,24 @@ import inet.visualizer.integrated.IntegratedVisualizer;
 
 network Ieee802154Showcase
 {
-    //@display("bgb=20,20;bgi=showcases/floorplan,s");
+    @display("bgb=616,406");
+    //@display("bgb=22,20;bgi=showcases/floorplan,s");
     submodules:
         sensor1: SensorNode {
-            @display("p=9.5,3.5;i=misc/sensor");
+            @display("p=312,74;i=misc/sensor");
         }
         sensor2: SensorNode {
-            @display("p=9.5,16.5;i=misc/sensor");
+            @display("p=191,62;i=misc/sensor2");
         }
         sensor3: SensorNode {
-            @display("p=10.75,10.75;i=misc/sensor");
+            @display("p=275,142;i=misc/sensor2");
         }
         sensor4: SensorNode {
-            @display("p=2.5,17.5;i=misc/sensor");
+            @display("p=175,170;i=misc/sensor2");
         }
-        sensor5: SensorNode {
-            @display("p=2.5,7;i=misc/sensor");
-        }
+        //sensor5: SensorNode {
+        //    @display("p=236,263;i=misc/sensor");
+        //}
         //lamp1: SensorNode {
           //  @display("p=8,5;i=status/bulb");
         //}
@@ -56,15 +57,15 @@ network Ieee802154Showcase
           //  @display("p=4,5;i=status/bulb");
         //}
         controller: SensorNode {
-            @display("p=6.5,10.5;i=misc/sensorgateway");
+            @display("p=54,133;i=misc/sensorgateway");
         }
         configurator: Ipv4NetworkConfigurator {
-            @display("p=18,0.75");
+            @display("p=532,199");
         }
         radioMedium: Ieee802154NarrowbandScalarRadioMedium {
-            @display("p=18,2.25");
+            @display("p=546,40");
         }
         visualizer: IntegratedMultiVisualizer {
-            @display("p=18,3.75");
+            @display("p=532,133");
         }
 }
